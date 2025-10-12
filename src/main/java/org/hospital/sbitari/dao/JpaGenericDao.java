@@ -9,7 +9,6 @@ import java.util.Optional;
 
 public class JpaGenericDao<T, ID> implements GenericDao<T, ID> {
 
-    // initialize lazily to avoid throwing during classloading (which caused NoClassDefFoundError)
     private static volatile EntityManagerFactory emf;
 
     private final Class<T> entityClass;
@@ -23,7 +22,6 @@ public class JpaGenericDao<T, ID> implements GenericDao<T, ID> {
         try {
             emf = Persistence.createEntityManagerFactory("teleexpertisePU");
         } catch (Throwable t) {
-            // log to console and throw a clear runtime exception
             System.err.println("[JpaGenericDao] failed to create EntityManagerFactory for 'teleexpertisePU': " + t);
             throw new IllegalStateException("Unable to initialize JPA EntityManagerFactory for persistence unit 'teleexpertisePU'", t);
         }
